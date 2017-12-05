@@ -43,6 +43,7 @@ except ImportError:
     pass
 
 
+_JSON_ENCODER = json.JSONEncoder(allow_nan=False, separators=(',', ':'))
 _XHTML_ESCAPE_RE = re.compile('[&<>"\']')
 _XHTML_ESCAPE_DICT = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;',
                       '\'': '&#39;'}
@@ -79,7 +80,7 @@ def json_encode(value):
     # the javascript.  Some json libraries do this escaping by default,
     # although python's standard library does not, so we do it here.
     # http://stackoverflow.com/questions/1580647/json-why-are-forward-slashes-escaped
-    return json.dumps(value).replace("</", "<\\/")
+    return _JSON_ENCODER.encode(value).replace("</", "<\\/")
 
 
 def json_decode(value):
